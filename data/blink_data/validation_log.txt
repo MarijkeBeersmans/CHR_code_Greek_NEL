@@ -1,0 +1,175 @@
+-----------test.jsonl------------
+length of the dataframe 1010
+
+subset of gold vs silver: data_status
+gold      567
+silver    443
+Name: count, dtype: int64
+
+number of unique entity 319
+
+RE_id
+26672    50
+37206    50
+37689    46
+65243    46
+67233    35
+         ..
+6611      1
+15159     1
+2401      1
+15890     1
+83675     1
+Name: count, Length: 319, dtype: int64
+
+number of unique entities silver 206
+
+RE_id
+26672    50
+37206    50
+37689    46
+65243    46
+67233    35
+         ..
+6611      1
+15159     1
+2401      1
+15890     1
+83675     1
+Name: count, Length: 319, dtype: int64
+
+number of unique entities gold 123
+
+RE_id
+26672    50
+37206    50
+37689    46
+65243    46
+67233    35
+         ..
+6611      1
+15159     1
+2401      1
+15890     1
+83675     1
+Name: count, Length: 319, dtype: int64
+-----------train.jsonl------------
+length of the dataframe 9066
+
+subset of gold vs silver: data_status
+gold      4851
+silver    4215
+Name: count, dtype: int64
+
+number of unique entity 2552
+
+RE_id
+26256    72
+3522     61
+26416    54
+20920    51
+25450    50
+         ..
+9977      1
+8717      1
+10198     1
+42203     1
+34598     1
+Name: count, Length: 2552, dtype: int64
+
+number of unique entities silver 1674
+
+RE_id
+26256    72
+3522     61
+26416    54
+20920    51
+25450    50
+         ..
+9977      1
+8717      1
+10198     1
+42203     1
+34598     1
+Name: count, Length: 2552, dtype: int64
+
+number of unique entities gold 984
+
+RE_id
+26256    72
+3522     61
+26416    54
+20920    51
+25450    50
+         ..
+9977      1
+8717      1
+10198     1
+42203     1
+34598     1
+Name: count, Length: 2552, dtype: int64
+-----------valid.jsonl------------
+length of the dataframe 1143
+
+subset of gold vs silver: data_status
+gold      597
+silver    546
+Name: count, dtype: int64
+
+number of unique entity 319
+
+RE_id
+26467    57
+63077    50
+91091    50
+6597     44
+54407    22
+         ..
+39865     1
+65609     1
+10496     1
+31626     1
+18084     1
+Name: count, Length: 319, dtype: int64
+
+number of unique entities silver 213
+
+RE_id
+26467    57
+63077    50
+91091    50
+6597     44
+54407    22
+         ..
+39865     1
+65609     1
+10496     1
+31626     1
+18084     1
+Name: count, Length: 319, dtype: int64
+
+number of unique entities gold 123
+
+RE_id
+26467    57
+63077    50
+91091    50
+6597     44
+54407    22
+         ..
+39865     1
+65609     1
+10496     1
+31626     1
+18084     1
+Name: count, Length: 319, dtype: int64
+Validation Issues:
+
+RE_id Overlaps Between Files:
+
+Glaux_id Overlaps Between Files:
+
+duplicate Glaux_ids within files:
+C:\Users\u0161477\Documents\NIKAW-Prep\NIKAW-Prep\Gitlab\CHR_NEL_code\data\blink_data\v6\full\kurz\test.jsonl: []
+C:\Users\u0161477\Documents\NIKAW-Prep\NIKAW-Prep\Gitlab\CHR_NEL_code\data\blink_data\v6\full\kurz\train.jsonl: []
+C:\Users\u0161477\Documents\NIKAW-Prep\NIKAW-Prep\Gitlab\CHR_NEL_code\data\blink_data\v6\full\kurz\valid.jsonl: []

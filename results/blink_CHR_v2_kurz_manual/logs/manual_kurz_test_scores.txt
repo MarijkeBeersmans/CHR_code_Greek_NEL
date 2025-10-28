@@ -1,0 +1,6 @@
+evaluation_results of this model
+
+biencoder_accuracy 0.008818342151675485
+recall_at, 0.5097001763668431
+crossencoder_normalized_accuracy, 0.4463667820069204
+overall_normalized_accuracy, 0.2275132275132275
