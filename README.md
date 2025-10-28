@@ -87,12 +87,4 @@ pages={39–50} }
 [Repo](https://github.com/facebookresearch/BLINK.git)
 
 ### Wikisource RE
-```bibtex
-@inproceedings{wu2019zero,
- title={Zero-shot Entity Linking with Dense Entity Retrieval},
- author={Ledell Wu, Fabio Petroni, Martin Josifoski, Sebastian Riedel, Luke Zettlemoyer},
- booktitle={EMNLP},
- year={2020}
-}
-```
 [Wikisource](https://de.wikisource.org/wiki/Paulys_Realencyclop%C3%A4die_der_classischen_Altertumswissenschaft)
