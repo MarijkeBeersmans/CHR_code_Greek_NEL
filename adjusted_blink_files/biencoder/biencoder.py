@@ -19,8 +19,8 @@ from transformers import (
 
 # from transformers import XLMRobertatokenizer
 
-from blink.common.ranker_base import XLMRobertaEncoder, get_model_obj
-from blink.common.optimizer import get_xlm_roberta_optimizer
+from common.ranker_base import XLMRobertaEncoder, get_model_obj
+from common.optimizer import get_xlm_roberta_optimizer
 
 
 def load_biencoder(params):

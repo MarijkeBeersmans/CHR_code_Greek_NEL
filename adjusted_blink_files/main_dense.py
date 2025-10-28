@@ -18,14 +18,14 @@ from colorama import init
 from termcolor import colored
 
 #import blink.ner as NER
-from utils.data import DataLoader, SequentialSampler, TensorDataset
+from torch.utils.data import DataLoader, SequentialSampler, TensorDataset
 from biencoder.biencoder import BiEncoderRanker, load_biencoder
 from crossencoder.crossencoder import CrossEncoderRanker, load_crossencoder
 from biencoder.data_process import (
     process_mention_data,
     get_candidate_representation,
 )
-import blink.candidate_ranking.utils as utils
+import candidate_ranking.utils as utils
 from crossencoder.train_cross import modify, evaluate
 from crossencoder.data_process import prepare_crossencoder_data
 #from blink.indexer.faiss_indexer import DenseFlatIndexer, DenseHNSWFlatIndexer

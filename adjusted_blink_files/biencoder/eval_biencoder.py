@@ -5,7 +5,7 @@
 # LICENSE file in the root directory of this source tree.
 #
 import sys
-sys.path.insert(1, '/home/pricie/marijkeb/notebooks/BLINK')
+sys.path.insert(1, '..')
 import argparse
 import json
 import logging
