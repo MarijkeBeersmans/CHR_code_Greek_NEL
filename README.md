@@ -1,7 +1,7 @@
 ----
 CODE FOR THE PAPER "Automatic Named Entity Linking for Ancient Greek with a Domain-Specific Knowledge Base" to be presented at CHR 2025 (Luxembourg)
 ----
-This repo accompanies the paper, in which we attempt to use the BLINK architecture to link Ancient Greek texts to a domain specific knowledge base. It contains a minimal codebase to reproduce the results obtained in the paper, in addition to other scripts that we used for transparancy. 
+This repo accompanies the paper, in which we attempt to use the BLINK architecture to link Ancient Greek texts to a domain specific knowledge base. It contains a minimal codebase to reproduce the results obtained in the paper, in addition to other scripts that we used for transparancy.   
 Note: Re-training is not possible, since only the test set of the manually annotated (gold) data is included as per the annotators' request. The full annotations will be published in a more complete version.
 
 
@@ -36,8 +36,8 @@ bash blink_training/CHR_testing.sh
 We thank the following projects and people for making this research possible:
 
 ### Gold data annotators:
-Evelien de Graaf: [ORCID](https://orcid.org/0009-0006-8650-1595)
-Herbert Verreth: [ORCID](https://orcid.org/0000-0002-3538-8290)
+- Evelien de Graaf: [ORCID](https://orcid.org/0009-0006-8650-1595)
+- Herbert Verreth: [ORCID](https://orcid.org/0000-0002-3538-8290)
 
 ### Silver data preliminaries:
 **GLAUx corpus**: [link](https://glaux.be/)
@@ -75,7 +75,7 @@ pages={39–50} }
 }
 ```
 
-### BLINK code
+### BLINK
 ```bibtex
 @inproceedings{wu2019zero,
  title={Zero-shot Entity Linking with Dense Entity Retrieval},
@@ -87,4 +87,12 @@ pages={39–50} }
 [Repo](https://github.com/facebookresearch/BLINK.git)
 
 ### Wikisource RE
+```bibtex
+@inproceedings{wu2019zero,
+ title={Zero-shot Entity Linking with Dense Entity Retrieval},
+ author={Ledell Wu, Fabio Petroni, Martin Josifoski, Sebastian Riedel, Luke Zettlemoyer},
+ booktitle={EMNLP},
+ year={2020}
+}
+```
 [Wikisource](https://de.wikisource.org/wiki/Paulys_Realencyclop%C3%A4die_der_classischen_Altertumswissenschaft)
