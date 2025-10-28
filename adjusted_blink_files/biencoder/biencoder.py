@@ -14,13 +14,16 @@ from tqdm import tqdm
 from transformers import (
     # BertPreTrainedModel,
     # BertConfig,
-    AutoModel, AutoTokenizer
+    AutoModel, AutoTokenizer, XLMRobertaTokenizer
+    #
 )
 
 # from transformers import XLMRobertatokenizer
 
 from common.ranker_base import XLMRobertaEncoder, get_model_obj
 from common.optimizer import get_xlm_roberta_optimizer
+
+from common.params import ENT_START_TAG, ENT_END_TAG, ENT_TITLE_TAG
 
 
 def load_biencoder(params):
@@ -30,7 +33,7 @@ def load_biencoder(params):
 
 
 class BiEncoderModule(torch.nn.Module):
-    def __init__(self, params):
+    def __init__(self, params, tokenizer):
         super(BiEncoderModule, self).__init__()
         if params["cand_bert"] != None and params['ctxt_bert'] != None:
             ctxt_bert = AutoModel.from_pretrained(params["ctxt_bert"])
@@ -38,6 +41,8 @@ class BiEncoderModule(torch.nn.Module):
         else:
             ctxt_bert = AutoModel.from_pretrained(params["bert_model"])
             cand_bert = AutoModel.from_pretrained(params['bert_model'])
+        cand_bert.resize_token_embeddings(len(tokenizer))
+        ctxt_bert.resize_token_embeddings(len(tokenizer))
         self.context_encoder = XLMRobertaEncoder(
             ctxt_bert,
             params["out_dim"],
@@ -82,11 +87,24 @@ class BiEncoderRanker(torch.nn.Module):
         self.n_gpu = torch.cuda.device_count()
         # init tokenizer
         self.NULL_IDX = 0
-        self.START_TOKEN = "[CLS]"
-        self.END_TOKEN = "[SEP]"
-        self.tokenizer = AutoTokenizer.from_pretrained(
-            params["bert_model"], do_lower_case=params["lowercase"], use_fast=False
-        )
+        # self.START_TOKEN = "[CLS]"
+        # self.END_TOKEN = "[SEP]"
+        if params['tokenizer_path']:
+            self.tokenizer = AutoTokenizer.from_pretrained(
+                params["tokenizer_path"], do_lower_case=params["lowercase"], use_fast=False
+            )
+        else:
+            self.tokenizer = XLMRobertaTokenizer.from_pretrained(
+                params["bert_model"], do_lower_case=params["lowercase"], use_fast=False
+            )
+        special_tokens_dict = {
+            "additional_special_tokens": [
+                ENT_START_TAG,
+                ENT_END_TAG,
+                ENT_TITLE_TAG,
+            ],
+        }
+        self.tokenizer.add_special_tokens(special_tokens_dict)
         # init model
         self.build_model()
         model_path = params.get("path_to_model", None)
@@ -106,7 +124,7 @@ class BiEncoderRanker(torch.nn.Module):
         self.model.load_state_dict(state_dict)
 
     def build_model(self):
-        self.model = BiEncoderModule(self.params)
+        self.model = BiEncoderModule(self.params, self.tokenizer)
 
     def save_model(self, output_dir):
         if not os.path.exists(output_dir):
@@ -215,3 +233,4 @@ def to_bert_input(token_idx, null_idx):
     return token_idx, mask
 
     # return token_idx, segment_idx, mask
+

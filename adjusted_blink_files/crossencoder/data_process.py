@@ -44,7 +44,7 @@ def prepare_crossencoder_mentions(
 
 
 def prepare_crossencoder_candidates(
-    tokenizer, labels, nns, id2title, id2text, max_cand_length=256, topk=64
+    tokenizer, labels, nns, id2title, id2text, max_cand_length, topk=64
 ):
 
     START_TOKEN = tokenizer.cls_token
@@ -121,7 +121,7 @@ def prepare_crossencoder_data(
 
     # encode candidates (output of biencoder)
     label_input_list, candidate_input_list = prepare_crossencoder_candidates(
-        tokenizer, labels, nns, id2title, id2text
+        tokenizer, labels, nns, id2title, id2text, max_context_length
     )
 
     if not keep_all:

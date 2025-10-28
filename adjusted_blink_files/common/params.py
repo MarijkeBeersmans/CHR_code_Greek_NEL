@@ -13,9 +13,9 @@ import sys
 import datetime
 
 
-ENT_START_TAG = "[unused0]"
-ENT_END_TAG = "[unused1]"
-ENT_TITLE_TAG = "[unused2]"
+ENT_START_TAG = "[MENTION_START]"
+ENT_END_TAG = "[MENTION_END]"
+ENT_TITLE_TAG = "[ENT]"
 
 
 class BlinkParser(argparse.ArgumentParser):
@@ -129,6 +129,13 @@ class BlinkParser(argparse.ArgumentParser):
         parser.add_argument(
             "--bert_model",
             default="bert-base-uncased",
+            type=str,
+            help="Bert pre-trained model selected in the list: bert-base-uncased, "
+            "bert-large-uncased, bert-base-cased, bert-base-multilingual, bert-base-chinese.",
+        )
+        parser.add_argument(
+            "--tokenizer_path",
+            default=None,
             type=str,
             help="Bert pre-trained model selected in the list: bert-base-uncased, "
             "bert-large-uncased, bert-base-cased, bert-base-multilingual, bert-base-chinese.",

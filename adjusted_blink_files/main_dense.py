@@ -217,6 +217,8 @@ def _get_test_samples(
     kb2id = None
     if test_entities_path:
         kb2id = __map_test_entities(test_entities_path, title2id, logger)
+        logging.info(f'first items from the kb = {[(key, value) for key, value in kb2id.items()][:5]}')
+    logging.info(f'type kb2id {type(kb2id)}')
     test_samples = __load_test(test_filename, kb2id, wikipedia_id2local_id, logger)
     return test_samples
 
@@ -260,7 +262,13 @@ def _run_biencoder(biencoder, dataloader, candidate_encoding, top_k=100, indexer
         labels.extend(label_ids.data.numpy())
         nns.extend(indicies)
         all_scores.extend(scores)
-    return labels, nns, all_scores
+    biencoder_found = []
+    for label, nn in zip(labels, nns):
+        if label in nn:
+            biencoder_found.append(True)
+        else:
+            biencoder_found.append(False)
+    return labels, nns, all_scores, biencoder_found
 
 
 def _process_crossencoder_dataloader(context_input, label_input, crossencoder_params):
@@ -335,8 +343,14 @@ def load_models(args, logger=None):
         index_path=getattr(args, 'index_path' , None),
         logger=logger,
     )
-    print(f'this is the entity for the first mention entity {candidate_encoding[33360]}')
-    print(f'in human language {id2title[33360]}, {id2text[33360]}')
+
+    print(f'first entity in the encoding {len(candidate_encoding[0])}')
+    print(f'in human language {id2title[0]}, {id2text[0]}')
+
+    print(f'second entity in the encoding {len(candidate_encoding[1])}')
+    print(f'in human language {id2title[1]}, {id2text[1]}')
+
+    # print(f'in human language {id2title[0]}, {id2text[0]}')
 
 
     return (
@@ -420,7 +434,7 @@ def run(
                     logger,
                 )
             samples = samples
-            print(samples[0])
+            # print(samples[0])
             stopping_condition = True
 
         # don't look at labels
@@ -444,7 +458,7 @@ def run(
             logger.info(f"run biencoder on {len(samples)} samples")
         top_k = args.top_k
         #what is nns?
-        labels, nns, scores = _run_biencoder(
+        labels, nns, scores, biencoder_found = _run_biencoder(
             biencoder, dataloader, candidate_encoding, top_k, faiss_indexer
         )
         if logger:
@@ -485,7 +499,7 @@ def run(
                 top_k = args.top_k
                 x = []
                 y = []
-                for i in range(1, top_k):
+                for i in range(1, top_k + 1):
                     temp_y = 0.0
                     for label, top in zip(labels, nns):
                         if label in top[:i]:
@@ -529,9 +543,10 @@ def run(
         )
 
         logging.info(f"""first sample = {samples[0]}""")
+        logging.info(f"""label_input = {label_input}""")
         logging.info(f"""as received by the crossencoder data\n lenght of the context_vecs:{len(context_input[0])}
                     len of the correct candidate_vec: {len(candidate_input[0][label_input[0]])}
-                    first candidateO_vec: {len(candidate_input[0][0])}
+                    first candidate_vec: {len(candidate_input[0][0])}
                     labels: {label_input[0]}""")
         # max_n = 200
         # context_input = context_input[:max_n]
@@ -542,7 +557,7 @@ def run(
             context_input, candidate_input, crossencoder_params["max_seq_length"]
         )
 
-        logging.info(f"first sample thing passed to evaluate function: {context_input_modified[0]}, {label_input[0]} \n len {len(context_input_modified[0][0])}")
+        logging.info(f"first sample thing passed to evaluate function: {context_input_modified[0]}, {label_input[0]} \n len {context_input_modified[0][61]}")
 
 
         dataloader = _process_crossencoder_dataloader(
@@ -579,6 +594,7 @@ def run(
 
             scores = []
             predictions = []
+            prediction_ids = []
             for entity_list, index_list, scores_list in zip(
                 nns, index_array, unsorted_scores
             ):
@@ -589,6 +605,7 @@ def run(
                 index_list.reverse()
 
                 sample_prediction = []
+                sample_prediction_id = []
                 sample_scores = []
                 for index in index_list:
                     e_id = entity_list[index]
@@ -596,9 +613,11 @@ def run(
                     e_title = id2title[e_id]
                     # print(e_title)
                     sample_prediction.append(e_title)
+                    sample_prediction_id.append(e_id)
                     sample_scores.append(scores_list[index])
                 predictions.append(sample_prediction)
                 scores.append(sample_scores)
+                prediction_ids.append(sample_prediction_id)
 
             crossencoder_normalized_accuracy = -1
             overall_unormalized_accuracy = -1
@@ -624,6 +643,8 @@ def run(
                 samples,
                 predictions,
                 scores,
+                biencoder_found,
+                prediction_ids
             )
 
 
@@ -736,26 +757,38 @@ if __name__ == "__main__":
     logger = utils.get_logger(args.output_path)
 
     models = load_models(args, logger)
-    biencoder_accuracy, recall_at, crossencoder_normalized_accuracy, overall_unormalized_accuracy, samples, predictions, scores = run(args, logger, *models)
+    biencoder_accuracy, recall_at, crossencoder_normalized_accuracy, overall_unormalized_accuracy, samples, predictions, scores, biencoder_found, prediction_ids = run(args, logger, *models)
     
     mode = "_".join(args.test_mentions.split('/')[-3:]).replace('.jsonl', '')
+    logging.info(f'mentions in mode {mode}')
 
     if args.keep_all == False:
+        outfile = args.output_path + f'/{mode}_scores.txt'
         with open(args.output_path + f'/{mode}_scores.txt', 'w', encoding='UTF-8') as f:
             f.write('evaluation_results of this model\n\n')
             f.write(f'biencoder_accuracy {biencoder_accuracy}\n',)
             f.write(f'recall_at, {recall_at}\n')
             f.write(f'crossencoder_normalized_accuracy, {crossencoder_normalized_accuracy}\n')
             f.write(f'overall_normalized_accuracy, {overall_unormalized_accuracy}\n')
+        print(f'recall and accuracy saved to {outfile}')
     else:
         final_results = []
-        for sample, prediction, score in zip(samples, predictions, scores):
+        for sample, prediction, score, biencoder_foud, prediction_id in zip(samples, predictions, scores, biencoder_found, prediction_ids):
+            print(sample)
+            m = Softmax(dim=0)
+            output = m(torch.Tensor(score))
             sample['prediction'] = prediction[0]
-            sample['prediction_score'] = score[0]
+            sample['prediction_id'] = prediction_id[0]
+            sample['biencoder_found'] = biencoder_foud
+            sample['prediction_score'] = output[0].float()
             sample['top_5'] = prediction[:5]
+            sample['top_5_scores'] = output[:5]
             final_results.append(sample)
-            df = pd.DataFrame(final_results)
-            df.to_csv(args.output_path + f'/{mode}_predictions.csv')
+        print(final_results[:3])
+        df = pd.DataFrame(final_results)
+        outfile = args.output_path + f'/{mode}_predictions.csv'
+        df.to_csv(outfile)
+        print(print(f'predictions and scores saved to {outfile}'))
         
 
 
