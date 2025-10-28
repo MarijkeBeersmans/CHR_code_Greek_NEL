@@ -30,9 +30,9 @@ from transformers import AutoTokenizer, AutoModel
 # from pytorch_transformers.tokenization_bert import BertTokenizer
 # from pytorch_transformers.tokenization_roberta import RobertaTokenizer
 
-from blink.common.ranker_base import XLMRobertaEncoder, get_model_obj
-from blink.common.optimizer import get_xlm_roberta_optimizer
-from blink.common.params import ENT_START_TAG, ENT_END_TAG, ENT_TITLE_TAG
+from common.ranker_base import XLMRobertaEncoder, get_model_obj
+from common.optimizer import get_xlm_roberta_optimizer
+from common.params import ENT_START_TAG, ENT_END_TAG, ENT_TITLE_TAG
 
 
 def load_crossencoder(params):
@@ -72,12 +72,7 @@ class CrossEncoderRanker(torch.nn.Module):
         )
         self.n_gpu = torch.cuda.device_count()
 
-        if params['tokenizer_path']:
-            self.tokenizer = AutoTokenizer.from_pretrained(
-                params["tokenizer_path"], do_lower_case=params["lowercase"], use_fast=False
-            )
-        else:
-            self.tokenizer = AutoTokenizer.from_pretrained(
+        self.tokenizer = AutoTokenizer.from_pretrained(
                 params["bert_model"], do_lower_case=params["lowercase"], use_fast=False
             )
 
