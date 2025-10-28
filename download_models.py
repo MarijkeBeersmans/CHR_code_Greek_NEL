@@ -1,6 +1,6 @@
 import os, requests, zipfile
 
-base_url = "https://zenodo.org/record/1234567/files"
+base_url = "https://zenodo.org/records/17463358/files"
 models = ["kurz_gold.zip", "kurz_gold_silver.zip", "voll_gold.zip", "voll_gold_silver.zip"]
 
 os.makedirs("models", exist_ok=True)
