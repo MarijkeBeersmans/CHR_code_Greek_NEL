@@ -41,12 +41,12 @@ python ../adjusted_blink_files/main_dense.py \
     --test_mentions "$TEST_MENTIONS" \
     --entity_catalogue "$ENTITY_CATALOGUE" \
     --top_k 64 \
-    --crossencoder_model ../models/$BLINK_MODEL_NAME/crossencoder/pytorch_model.bin \
-    --crossencoder_config ../models/$BLINK_MODEL_NAME/crossencoder/training_params.txt \
-    --biencoder_model ../models/$BLINK_MODEL_NAME/biencoder/pytorch_model.bin \
-    --biencoder_config ../models/$BLINK_MODEL_NAME/biencoder/training_params.txt \
-    --output ../models/$BLINK_MODEL_NAME/logs \
-    --entity_encoding ../models/$BLINK_MODEL_NAME/cand_encoding \
+    --crossencoder_model models/$BLINK_MODEL_NAME/crossencoder/pytorch_model.bin \
+    --crossencoder_config models/$BLINK_MODEL_NAME/crossencoder/training_params.txt \
+    --biencoder_model models/$BLINK_MODEL_NAME/biencoder/pytorch_model.bin \
+    --biencoder_config models/$BLINK_MODEL_NAME/biencoder/training_params.txt \
+    --output models/$BLINK_MODEL_NAME/logs \
+    --entity_encoding models/$BLINK_MODEL_NAME/cand_encoding \
     --keep_all True
 
 # echo "✅ First run complete (with keep_all)."
@@ -57,12 +57,12 @@ python ../adjusted_blink_files/main_dense.py \
     --test_mentions "$TEST_MENTIONS" \
     --entity_catalogue "$ENTITY_CATALOGUE" \
     --top_k 64 \
-    --crossencoder_model ../models/$BLINK_MODEL_NAME/crossencoder/pytorch_model.bin \
-    --crossencoder_config ../models/$BLINK_MODEL_NAME/crossencoder/training_params.txt \
-    --biencoder_model ../models/$BLINK_MODEL_NAME/biencoder/pytorch_model.bin \
-    --biencoder_config ../models/$BLINK_MODEL_NAME/biencoder/training_params.txt \
-    --output ../models/$BLINK_MODEL_NAME/logs \
-    --entity_encoding ../models/$BLINK_MODEL_NAME/cand_encoding
+    --crossencoder_model models/$BLINK_MODEL_NAME/crossencoder/pytorch_model.bin \
+    --crossencoder_config models/$BLINK_MODEL_NAME/crossencoder/training_params.txt \
+    --biencoder_model models/$BLINK_MODEL_NAME/biencoder/pytorch_model.bin \
+    --biencoder_config models/$BLINK_MODEL_NAME/biencoder/training_params.txt \
+    --output models/$BLINK_MODEL_NAME/logs \
+    --entity_encoding models/$BLINK_MODEL_NAME/cand_encoding
 
 echo "✅ Second run complete (without keep_all)."
 echo "🎉 All evaluations finished!"
