@@ -87,6 +87,7 @@ pages={39–50} }
 }
 ```
 [Repo](https://github.com/facebookresearch/BLINK.git)
+Licensed under the MIT License (`/CHR_code_Greek_NEL/adjusted_blink_files/LICENSE-MIT`)
 
 ### Wikisource RE
 [Wikisource](https://de.wikisource.org/wiki/Paulys_Realencyclop%C3%A4die_der_classischen_Altertumswissenschaft)
