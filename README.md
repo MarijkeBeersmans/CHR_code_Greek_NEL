@@ -26,7 +26,7 @@ conda env create -f environment.yml
 The model weights are hosted on [Zenodo](https://zenodo.org/records/17463358). They can be downloaded using the following script:
 
 ```bash
-python dowload_models.py
+python download_models.py
 ```
 
 ### Testing
